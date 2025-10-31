@@ -1,0 +1,131 @@
+Task1:Conceptual Design through FTR
+Aim:Using basic database design methodology and ER modeler, design Entity Relationship Diagram by satisfying the following sub tasks:
+1.	a Identifying the entities.
+1.	b Identifying the attributes.
+1. c Identification of relationships, cardinality, type of relationship.
+1. d Reframing the relations with keys and constraint.
+1.	e Using create, develop ER/ER diagram
+
+1.a Identifying the entities
+1.a.1 CricketBoard
+1.a.2 Team
+1.a.3 Player
+1.a.4 Match
+1.a.5 Ground	
+1.a.6 Umpire
+1.b Identifyingtheattributes
+1.b.1 CricketBoard(BoardID, Name, Address, Contact_No)
+1.b.2 Team(TeamID, Name, Coach, Captain)
+1.b.3 Player(PlayerID, FName, LName, Age, DateofBirth, PlayingRole, email, contact_no)
+1.b.4 Match( MatchID, Date, Time, Result)
+1.b.5 Ground(GroundID, Name, Location, Capacity)
+1.b.6 Umpire(UmpireID, FName, LName, Age, DateofBirth, Country, email, contact_no)
+
+1.c Identification of relationships, cardinality, type of relationship.
+1.c.1 Board-Team Relationship: The Board will have a one-to-many relationship with Teams since the board can have multiple teams affiliated with it, but a team can only be associated with one board.
+1.c.2 Team-Player Relationship: Teams and Players will have a many-to-many relationship since a team can have multiple players, and a player can be a part of multiple teams over time.
+1.c,3. Match-Team Relationship: Matches will have a many-to-many relationship with Teams, as a match involves two teams, and a team can participate in multiple matches.
+1.c.4. Match-Ground Relationship: Matches will have a one-to-one relationship with Grounds, as each match takes place in one specific ground.
+1.d Reframing the relations with keys and constraint
+1.d.1 Create Table CricketBoard:
+SQL>create table CricketBoard(BoardID varchar(10) PRIMARY KEY, Name varchar(30), Address varchar(50), Contact_No number);
+Table Created
+SQL>DESC CricketBoard
+Column	NULL	TYPE
+BoardID	NOT NULL	VARCHAR(10)
+Name	-	VARCHAR(30)
+Address	-	VARCHAR(50)
+Contact_No	-	NUMBER
+
+1.d.2 Create Table Team:
+SQL> create table Team(TeamID varchar(6) PRIMARY KEY, BoardID varchar(10), Name varchar(30), Coach varchar(30), Captain varchar(30), FOREIGN KEY(BoardID) REFERENCES CricketBoard(BoardID));
+Table created.
+SQL> DESC TEAM
+ Name                                      Null?                       Type
+ ----------------------------------------- -------- ----------------------------
+ TEAMID                                NOT NULL             	VARCHAR2(6)
+ BOARDID		      NOT NULL		VARCHAR2(10)
+ NAME                                    -          		VARCHAR2(30)
+ COACH                                 -             		VARCHAR2(30)
+ CAPTAIN                              -              		VARCHAR2(30)
+1.d.3 Create Table Player:
+SQL> CREATE table Player(PlayerID varchar(6) PRIMARY KEY, TeamID varchar(6),  FName varchar(30), LName varchar(30), Age number(5,2), DateofBirth date, PlayingRole varchar(25), email varchar(40), contact_no number, FOREIGN KEY(TeamID) REFERENCES Team(TeamID));
+Table created.
+SQL> DESC PLAYER
+ Name                                      Null?    	Type
+ ----------------------------------------- -------- ----------------------------
+ PLAYERID                      NOT NULL         VARCHAR2(6)
+ TEAMID		       NOT NULL	VARCHAR2(6)
+ FNAME                                              	VARCHAR2(30)
+ LNAME                                              	VARCHAR2(30)
+ AGE                                                		NUMBER(5,2)
+ DATEOFBIRTH                                        	DATE
+ PLAYINGROLE                                        	VARCHAR2(25)
+ EMAIL                                                 	VARCHAR2(40)
+ CONTACT_NO                                          	NUMBER
+
+1.d.4 Create Table Match:
+
+SQL> create table Match( MatchID varchar(10), TeamID1 varchar(6), TeamID2 varchar(6), PlayerID varchar(6), Match_Date date, Time1 number, Result varchar(20), PRIMARY KEY(MatchID,PlayerID), FOREIGN KEY(TeamID1) REFERENCES team(TeamID), FOREIGN KEY(TeamID2) REFERENCES team(TeamID), FOREIGN KEY(PlayerID) REFERENCES Player(PLayerID));
+Table created.
+SQL> DESC Match
+
+
+ Name                                      Null?    		Type
+ ----------------------------------------- -------- ----------------------------
+ MATCHID                            NOT NULL           	VARCHAR2(10)
+ TEAMID1		    	NOT NULL		VARCHAR2(6)
+ TEAMID2		    	NOT NULL		VARCHAR2(6)
+ PLAYERID		    	NOT NULL		VARCHAR2(6)
+ MATCH_DATE                                         		DATE
+ TIME1                                              			NUMBER
+ RESULT                                             		VARCHAR2(20)
+
+1.d.5 Create Table Ground:
+SQL> create table Ground(GroundID varchar(10) PRIMARY KEY, MatchID Varchar(10), Name varchar(30), Location varchar(30), Capacity number, FOREIGN KEY(MatchID) REFERENCES Match(MatchID));
+
+Table created.
+
+SQL> DESC Ground
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ GROUNDID                    NOT NULL          VARCHAR2(10)
+ MATCHID	             NOT NULL	VARCHAR2(10)
+ NAME                                               	VARCHAR2(30)
+ LOCATION                                           	VARCHAR2(30)
+ CAPACITY                                           	NUMBER
+
+1.d.6 Create Table Umpire:
+SQL> Create Table Umpire(UmpireID varchar(10) PRIMARY KEY, FName varchar(30), LName varchar(30), Age number(5,2), DateofBirth date, Country varchar(30), email varchar(40), contact_no number);
+
+SQL> DESC Umpire
+ Name                                      Null?    	Type
+ ----------------------------------------- -------- ----------------------------
+ UMPIREID                  	NOT NULL    VARCHAR2(10)
+ FNAME                                              	VARCHAR2(30)
+ LNAME                                              	VARCHAR2(30)
+ AGE                                                		NUMBER(5,2)
+ DATEOFBIRTH                                       	DATE
+ COUNTRY                                            	VARCHAR2(30)
+ EMAIL                                              		VARCHAR2(40)
+ CONTACT_NO                                         	NUMBER
+
+1.d.6 Create Table Umpire_Umpired:
+SQL> create table Umpire_Umpired(UmpireID varchar(10), MatchID Varchar(10), GroundID varchar(10), FOREIGN KEY(UmpireID) REFERENCES Umpire(UmpireID), FOREIGN KEY(MatchID) REFERENCES Match(MatchID), FOREIGN KEY(GroundID) REFERENCES Ground(GroundID));
+
+Table created.
+
+SQL> DESC Umpire
+ Name                                      Null?    	     Type
+ ----------------------------------------- -------- ----------------------------
+ UMPIREID                  	NOT NULL         VARCHAR2(10)
+ GROUNDID                  	NOT NULL         VARCHAR2(10)
+ MATCHID			NOT NULL	     VARCHAR2(10)
+ 
+
+
+
+
+
+Result:
+Thus the database design methodology and ER Model design diagram has been completed successfully.
